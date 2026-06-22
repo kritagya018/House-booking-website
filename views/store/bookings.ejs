@@ -1,0 +1,62 @@
+<%- include('../partials/head') %>
+  </head>
+  <body class="bg-slate-50">
+    <%- include('../partials/nav') %>
+    <main class="container mx-auto px-4 py-12 max-w-7xl">
+      <div class="mb-12 flex flex-col items-center">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fa-solid fa-calendar-check text-blue-500 text-3xl"></i>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
+          Your <span class="text-blue-500">Bookings</span>
+        </h2>
+      </div>
+      
+      <% if (bookings.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <% bookings.forEach(booking => { %>
+            <% if (booking.homeId) { %>
+              <div class="bg-white rounded-2xl overflow-hidden card-hover border border-slate-100 relative group flex flex-col h-full shadow-sm">
+                <a href="/homes/<%= booking.homeId._id %>" class="block flex-grow">
+                  <div class="relative h-48 overflow-hidden">
+                    <img src="/<%= booking.homeId.photo %>" alt="<%= booking.homeId.houseName %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md uppercase tracking-wider">
+                      Confirmed
+                    </div>
+                  </div>
+                  <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-slate-800 truncate mb-1"><%= booking.homeId.houseName %></h3>
+                    <p class="text-slate-500 mb-4 flex items-center text-sm font-medium">
+                      <i class="fa-solid fa-location-dot mr-2 text-slate-400"></i><%= booking.homeId.location %>
+                    </p>
+                    
+                    <div class="mt-auto pt-4 border-t border-slate-100">
+                      <div class="flex justify-between items-center mb-3">
+                        <span class="text-slate-500 text-sm">Total Paid</span>
+                        <span class="text-xl font-extrabold text-slate-800">Rs <%= booking.homeId.price %></span>
+                      </div>
+                      <div class="bg-slate-50 p-3 rounded-lg flex items-center gap-3">
+                        <i class="fa-regular fa-clock text-blue-500"></i>
+                        <div>
+                          <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Booked On</p>
+                          <p class="text-sm text-slate-700 font-medium"><%= booking.bookingDate.toDateString() %></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="bg-white rounded-3xl p-12 text-center max-w-2xl mx-auto border border-slate-100 shadow-sm mt-8">
+          <i class="fa-regular fa-calendar-xmark text-6xl text-slate-200 mb-4"></i>
+          <p class="text-2xl text-slate-700 font-medium mb-4">No trips booked... yet!</p>
+          <p class="text-slate-500 mb-8">Time to dust off your bags and start planning your next adventure.</p>
+          <a href="/homes" class="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-8 py-3 rounded-full font-bold">Start Searching</a>
+        </div>
+      <% } %>
+    </main>
+  </body>
+</html>

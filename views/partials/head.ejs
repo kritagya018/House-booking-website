@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %> | airbnbLuxe</title>
+    <!-- Modern Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/output.css" />
+    <style>
+      body {
+        font-family: 'Outfit', sans-serif;
+        background-color: #f8fafc;
+        color: #0f172a;
+      }
+      .glass-nav {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      }
+      .card-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .btn-gradient {
+        background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+        transition: all 0.3s ease;
+      }
+      .btn-gradient:hover {
+        box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.4);
+        transform: translateY(-2px);
+      }
+    </style>

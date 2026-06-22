@@ -1,0 +1,60 @@
+<%- include('../partials/head') %>
+  </head>
+  <body class="bg-slate-50">
+      <%- include('../partials/nav') %>
+      <main class="container mx-auto px-4 py-12 max-w-6xl">
+          <div class="bg-white shadow-2xl rounded-3xl overflow-hidden border border-slate-100">
+              <div class="relative h-[500px]">
+                  <img src="/<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
+                  <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                      <i class="fa-solid fa-star text-yellow-500"></i>
+                      <span class="font-extrabold text-slate-800 text-lg"><%= home.rating %> <span class="font-normal text-slate-500 text-sm">/ 5</span></span>
+                  </div>
+              </div>
+              
+              <div class="p-10 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div class="md:col-span-2 space-y-8">
+                      <div>
+                          <h2 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight mb-4">
+                              <%= home.houseName %>
+                          </h2>
+                          <p class="text-slate-500 text-lg flex items-center">
+                              <i class="fa-solid fa-location-dot text-rose-500 mr-3 text-xl"></i> <%= home.location %>
+                          </p>
+                      </div>
+
+                      <div class="border-t border-slate-100 pt-8">
+                          <h3 class="text-2xl font-bold text-slate-800 mb-4">About this home</h3>
+                          <p class="text-slate-600 leading-relaxed text-lg"><%= home.description %></p>
+                      </div>
+                  </div>
+                  
+                  <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 h-fit sticky top-32">
+                      <div class="flex items-end gap-2 mb-8 border-b border-slate-200 pb-6">
+                          <span class="text-4xl font-extrabold text-slate-800">Rs <%= home.price %></span>
+                          <span class="text-slate-500 font-medium pb-1">/ night</span>
+                      </div>
+                      
+                      <div class="flex flex-col gap-4">
+                          <form action="/bookings" method="POST" class="w-full">
+                              <input type="hidden" name="homeId" value="<%= home._id %>">
+                              <button type="submit" class="btn-gradient w-full text-white font-bold text-lg py-4 rounded-xl shadow-lg flex justify-center items-center gap-2">
+                                  <i class="fa-solid fa-calendar-check"></i> Book Now
+                              </button>
+                          </form>
+                          
+                          <form action="/favourites" method="POST" class="w-full">
+                              <input type="hidden" name="id" value="<%= home._id %>">
+                              <button type="submit" class="w-full bg-white border-2 border-slate-200 text-slate-700 hover:border-rose-500 hover:text-rose-600 font-bold text-lg py-3.5 rounded-xl transition-all flex justify-center items-center gap-2">
+                                  <i class="fa-regular fa-heart"></i> Add to Favourites
+                              </button>
+                          </form>
+                      </div>
+                      
+                      <p class="text-center text-slate-400 text-sm mt-6">You won't be charged yet</p>
+                  </div>
+              </div>
+          </div>
+      </main>
+  </body>
+</html>

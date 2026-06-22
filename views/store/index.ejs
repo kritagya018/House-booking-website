@@ -1,0 +1,115 @@
+<%- include('../partials/head') %>
+  </head>
+  <body class="bg-slate-50">
+    <%- include('../partials/nav') %>
+    
+    <!-- Hero Section -->
+    <div class="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 w-full h-full">
+        <img src="/images/hero.png" alt="Luxury Villa" class="w-full h-full object-cover transform scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+      </div>
+      <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-10">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-lg tracking-tight leading-tight">
+          Find your next <br/><span class="text-rose-400">perfect stay.</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-slate-200 mb-10 font-light drop-shadow max-w-2xl mx-auto">
+          Discover luxury villas, cozy cabins, and extraordinary homes around the world.
+        </p>
+        <form action="/homes" method="GET" class="bg-white p-2 rounded-full flex items-center max-w-2xl w-full mx-auto shadow-2xl">
+          <div class="flex-grow pl-6 pr-2">
+            <input type="text" name="search" placeholder="Where do you want to go?" class="w-full bg-transparent outline-none text-slate-700 text-lg">
+          </div>
+          <button type="submit" class="btn-gradient text-white px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-search"></i> Search
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-20 max-w-7xl">
+      <div class="flex flex-col md:flex-row justify-between md:items-end mb-10 gap-4">
+        <div>
+          <h2 class="text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">Explore <span class="gradient-text">Top Destinations</span></h2>
+          <p class="text-slate-500 text-lg mb-2 md:mb-0">Handpicked premium properties for an unforgettable experience.</p>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <a href="/homes" class="text-rose-600 font-semibold hover:text-rose-700 hidden md:flex items-center gap-2 transition-colors">
+            View all homes <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          
+          <div class="relative inline-block text-left" id="destination-dropdown-container">
+            <div>
+              <button type="button" id="destination-button" class="inline-flex justify-center items-center w-full md:w-auto rounded-full border border-slate-300 shadow-sm px-6 py-3 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
+                Select Location
+                <i class="fa-solid fa-chevron-down ml-2 text-slate-400"></i>
+              </button>
+            </div>
+            <div id="destination-menu" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-20">
+              <div class="py-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                <a href="/homes?location=Goa" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-umbrella-beach text-rose-400 mr-3 w-4 text-center"></i> Goa</a>
+                <a href="/homes?location=Manali" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-mountain text-rose-400 mr-3 w-4 text-center"></i> Manali</a>
+                <a href="/homes?location=Mumbai" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-city text-rose-400 mr-3 w-4 text-center"></i> Mumbai</a>
+                <a href="/homes?location=Delhi" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-monument text-rose-400 mr-3 w-4 text-center"></i> Delhi</a>
+                <a href="/homes?location=Kerala" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-water text-rose-400 mr-3 w-4 text-center"></i> Kerala</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <% registeredHomes.forEach(home => { %>
+          <div class="bg-white rounded-2xl overflow-hidden card-hover border border-slate-100 relative group">
+            <a href="/homes/<%= home._id %>" class="block">
+              <div class="relative h-64 overflow-hidden">
+                <img src="/<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                  <i class="fa-solid fa-star text-yellow-500 text-sm"></i>
+                  <span class="font-bold text-slate-800 text-sm"><%= home.rating %></span>
+                </div>
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-800 truncate mb-1"><%= home.houseName %></h3>
+                <p class="text-slate-500 mb-4 flex items-center text-sm font-medium">
+                  <i class="fa-solid fa-location-dot mr-2 text-slate-400"></i><%= home.location %>
+                </p>
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                  <div>
+                    <span class="text-2xl font-extrabold text-slate-800">Rs <%= home.price %></span>
+                    <span class="text-slate-500 text-sm font-medium"> / night</span>
+                  </div>
+                  <div class="bg-rose-50 text-rose-600 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        <% }) %>
+      </div>
+    </main>
+
+    <script>
+      // Dropdown toggle logic
+      const destBtn = document.getElementById('destination-button');
+      const destMenu = document.getElementById('destination-menu');
+      
+      if (destBtn && destMenu) {
+        destBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          destMenu.classList.toggle('hidden');
+        });
+        
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!destBtn.contains(e.target) && !destMenu.contains(e.target)) {
+            destMenu.classList.add('hidden');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
