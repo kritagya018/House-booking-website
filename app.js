@@ -63,10 +63,13 @@ const multerOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single('photo'));
-app.use(express.static(path.join(rootDir, 'public')))
-app.use("/uploads", express.static(path.join(rootDir, 'uploads')))
-app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')))
-app.use("/homes/uploads", express.static(path.join(rootDir, 'uploads')))
+app.use(express.static(path.join(__dirname, 'public')))
+app.use("/uploads", express.static(path.join(__dirname, 'uploads')))
+app.use("/host/uploads", express.static(path.join(__dirname, 'uploads')))
+app.use("/homes/uploads", express.static(path.join(__dirname, 'uploads')))
+if (process.env.VERCEL) {
+  app.use("/tmp", express.static("/tmp"));
+}
 
 app.use(session({
   secret: "StayEG-Secret-Key-2026",
