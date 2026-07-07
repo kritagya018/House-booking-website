@@ -3,7 +3,7 @@ const fs = require("fs");
 
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
-    pageTitle: "Add Home to airbnb",
+    pageTitle: "List Your Property",
     currentPage: "addHome",
     editing: false,
     isLoggedIn: req.isLoggedIn,
@@ -21,10 +21,9 @@ exports.getEditHome = (req, res, next) => {
       return res.redirect("/host/host-home-list");
     }
 
-    console.log(homeId, editing, home);
     res.render("host/edit-home", {
       home: home,
-      pageTitle: "Edit your Home",
+      pageTitle: "Edit Property",
       currentPage: "host-homes",
       editing: editing,
       isLoggedIn: req.isLoggedIn,
@@ -37,7 +36,7 @@ exports.getHostHomes = (req, res, next) => {
   Home.find().then((registeredHomes) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
-      pageTitle: "Host Homes List",
+      pageTitle: "My Properties",
       currentPage: "host-homes",
       isLoggedIn: req.isLoggedIn,
       user: req.session.user,
@@ -47,14 +46,12 @@ exports.getHostHomes = (req, res, next) => {
 
 exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, description, bedrooms, guests, hoursOfStay } = req.body;
-  console.log(houseName, price, location, rating, description);
-  console.log(req.file);
 
   if (!req.file) {
     return res.status(422).send("No image provided");
   }
 
-  const photo = req.file.path;
+  const photo = req.file.path.replace(/\\/g, '/');
 
   const home = new Home({
     houseName,
@@ -75,8 +72,7 @@ exports.postAddHome = (req, res, next) => {
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, description, bedrooms, guests, hoursOfStay } =
-    req.body;;
+  const { id, houseName, price, location, rating, description, bedrooms, guests, hoursOfStay } = req.body;
   Home.findById(id)
     .then((home) => {
       home.houseName = houseName;
@@ -94,7 +90,7 @@ exports.postEditHome = (req, res, next) => {
             console.log("Error while deleting file ", err);
           }
         });
-        home.photo = req.file.path;
+        home.photo = req.file.path.replace(/\\/g, '/');
       }
 
       home
@@ -114,7 +110,6 @@ exports.postEditHome = (req, res, next) => {
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
-  console.log("Came to delete ", homeId);
   Home.findByIdAndDelete(homeId)
     .then(() => {
       res.redirect("/host/host-home-list");

@@ -1,62 +1,175 @@
 <%- include('../partials/head') %>
   </head>
-  <body class="bg-slate-50">
+  <body>
     <%- include('../partials/nav') %>
-    <main class="container mx-auto px-4 py-12 max-w-7xl">
-      <div class="mb-12 flex flex-col items-center">
-        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-          <i class="fa-solid fa-calendar-check text-blue-500 text-3xl"></i>
+    <main style="max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <!-- Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem;">My <span class="brand-text">Bookings</span></h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Manage your reservations and booking history</p>
         </div>
-        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
-          Your <span class="text-blue-500">Bookings</span>
-        </h2>
+        <a href="/homes" class="btn-primary" style="text-decoration: none;"><i class="fa-solid fa-plus"></i> New Booking</a>
       </div>
-      
+
+      <!-- Status Tabs -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <a href="/bookings" class="tab-btn <%= statusFilter === 'all' ? 'active' : '' %>" style="text-decoration: none;">
+          All <span style="margin-left: 0.3rem; font-size: 0.75rem; opacity: 0.7;"><%= counts.all %></span>
+        </a>
+        <a href="/bookings?status=confirmed" class="tab-btn <%= statusFilter === 'confirmed' ? 'active' : '' %>" style="text-decoration: none;">
+          <i class="fa-solid fa-circle" style="font-size: 0.4rem; color: var(--success);"></i> Active <span style="margin-left: 0.3rem; font-size: 0.75rem; opacity: 0.7;"><%= counts.confirmed %></span>
+        </a>
+        <a href="/bookings?status=completed" class="tab-btn <%= statusFilter === 'completed' ? 'active' : '' %>" style="text-decoration: none;">
+          <i class="fa-solid fa-circle" style="font-size: 0.4rem; color: var(--info);"></i> Completed <span style="margin-left: 0.3rem; font-size: 0.75rem; opacity: 0.7;"><%= counts.completed %></span>
+        </a>
+        <a href="/bookings?status=cancelled" class="tab-btn <%= statusFilter === 'cancelled' ? 'active' : '' %>" style="text-decoration: none;">
+          <i class="fa-solid fa-circle" style="font-size: 0.4rem; color: var(--danger);"></i> Cancelled <span style="margin-left: 0.3rem; font-size: 0.75rem; opacity: 0.7;"><%= counts.cancelled %></span>
+        </a>
+      </div>
+
+      <!-- Bookings List -->
       <% if (bookings.length > 0) { %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
           <% bookings.forEach(booking => { %>
             <% if (booking.homeId) { %>
-              <div class="bg-white rounded-2xl overflow-hidden card-hover border border-slate-100 relative group flex flex-col h-full shadow-sm">
-                <a href="/homes/<%= booking.homeId._id %>" class="block flex-grow">
-                  <div class="relative h-48 overflow-hidden">
-                    <img src="/<%= booking.homeId.photo %>" alt="<%= booking.homeId.houseName %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md uppercase tracking-wider">
-                      Confirmed
-                    </div>
-                  </div>
-                  <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-slate-800 truncate mb-1"><%= booking.homeId.houseName %></h3>
-                    <p class="text-slate-500 mb-4 flex items-center text-sm font-medium">
-                      <i class="fa-solid fa-location-dot mr-2 text-slate-400"></i><%= booking.homeId.location %>
-                    </p>
-                    
-                    <div class="mt-auto pt-4 border-t border-slate-100">
-                      <div class="flex justify-between items-center mb-3">
-                        <span class="text-slate-500 text-sm">Total Paid</span>
-                        <span class="text-xl font-extrabold text-slate-800">Rs <%= booking.homeId.price %></span>
-                      </div>
-                      <div class="bg-slate-50 p-3 rounded-lg flex items-center gap-3">
-                        <i class="fa-regular fa-clock text-blue-500"></i>
+              <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; transition: all 0.3s;">
+                <div style="display: flex; flex-wrap: wrap;">
+                  <!-- Image -->
+                  <a href="/homes/<%= booking.homeId._id %>" style="display: block; width: 250px; height: 180px; flex-shrink: 0;">
+                    <img src="/<%= booking.homeId.photo %>" alt="<%= booking.homeId.houseName %>" style="width: 100%; height: 100%; object-fit: cover;">
+                  </a>
+                  <!-- Info -->
+                  <div style="flex: 1; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; min-width: 250px;">
+                    <div>
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                         <div>
-                          <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Booked On</p>
-                          <p class="text-sm text-slate-700 font-medium"><%= booking.bookingDate.toDateString() %></p>
+                          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">
+                            <a href="/homes/<%= booking.homeId._id %>" style="color: inherit; text-decoration: none;"><%= booking.homeId.houseName %></a>
+                          </h3>
+                          <p style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;">
+                            <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> <%= booking.homeId.location %>
+                          </p>
+                        </div>
+                        <span class="badge <%= booking.status === 'confirmed' ? 'badge-success' : booking.status === 'cancelled' ? 'badge-danger' : 'badge-info' %>">
+                          <%= booking.status %>
+                        </span>
+                      </div>
+                      
+                      <div style="display: flex; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                        <div>
+                          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Check-in</div>
+                          <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);"><%= booking.checkIn.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
+                        </div>
+                        <div style="display: flex; align-items: center; color: var(--text-muted);"><i class="fa-solid fa-arrow-right" style="font-size: 0.7rem;"></i></div>
+                        <div>
+                          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Check-out</div>
+                          <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);"><%= booking.checkOut.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
+                        </div>
+                        <div>
+                          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Guests</div>
+                          <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);"><%= booking.guests %></div>
+                        </div>
+                        <div>
+                          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Total</div>
+                          <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">₹<%= booking.totalPrice.toLocaleString() %></div>
                         </div>
                       </div>
                     </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+                      <a href="/homes/<%= booking.homeId._id %>" class="btn-secondary" style="text-decoration: none; font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        <i class="fa-solid fa-eye"></i> View Property
+                      </a>
+                      <% if (booking.status === 'confirmed') { %>
+                        <button onclick="openCancelModal('<%= booking._id %>', '<%= booking.homeId.houseName %>')" class="btn-danger" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                          <i class="fa-solid fa-xmark"></i> Cancel Booking
+                        </button>
+                      <% } %>
+                      <% if ((booking.status === 'completed' || booking.status === 'confirmed') && !reviewedHomeIds.includes(booking.homeId._id.toString())) { %>
+                        <a href="/homes/<%= booking.homeId._id %>#star-rating" class="btn-secondary" style="text-decoration: none; font-size: 0.85rem; padding: 0.5rem 1rem; color: #f59e0b; border-color: rgba(245,158,11,0.3);">
+                          <i class="fa-solid fa-star"></i> Write Review
+                        </a>
+                      <% } %>
+                      <% if (reviewedHomeIds.includes(booking.homeId._id.toString())) { %>
+                        <span style="font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-check-circle"></i> Reviewed</span>
+                      <% } %>
+                    </div>
+
+                    <% if (booking.status === 'cancelled' && booking.cancellationReason) { %>
+                      <div style="margin-top: 0.75rem; padding: 0.75rem; background: rgba(239,68,68,0.05); border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.1);">
+                        <p style="font-size: 0.8rem; color: var(--text-muted);"><strong style="color: var(--danger);">Cancellation reason:</strong> <%= booking.cancellationReason %></p>
+                      </div>
+                    <% } %>
                   </div>
-                </a>
+                </div>
               </div>
             <% } %>
           <% }) %>
         </div>
       <% } else { %>
-        <div class="bg-white rounded-3xl p-12 text-center max-w-2xl mx-auto border border-slate-100 shadow-sm mt-8">
-          <i class="fa-regular fa-calendar-xmark text-6xl text-slate-200 mb-4"></i>
-          <p class="text-2xl text-slate-700 font-medium mb-4">No trips booked... yet!</p>
-          <p class="text-slate-500 mb-8">Time to dust off your bags and start planning your next adventure.</p>
-          <a href="/homes" class="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-8 py-3 rounded-full font-bold">Start Searching</a>
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border);">
+          <i class="fa-regular fa-calendar-xmark" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+            <% if (statusFilter === 'all') { %>No bookings yet<% } else { %>No <%= statusFilter %> bookings<% } %>
+          </p>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Time to plan your next adventure!</p>
+          <a href="/homes" class="btn-primary" style="text-decoration: none;">Explore Stays</a>
         </div>
       <% } %>
     </main>
+
+    <!-- Cancel Booking Modal -->
+    <div class="modal-overlay" id="cancel-modal">
+      <div class="modal-content">
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Cancel Booking</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">Are you sure you want to cancel your booking for <strong id="cancel-home-name" style="color: var(--text-primary);"></strong>?</p>
+        <form action="/bookings/cancel" method="POST" id="cancel-form">
+          <input type="hidden" name="bookingId" id="cancel-booking-id">
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Reason for cancellation</label>
+            <select name="reason" class="form-input" style="cursor: pointer;">
+              <option value="Change of plans">Change of plans</option>
+              <option value="Found a better option">Found a better option</option>
+              <option value="Schedule conflict">Schedule conflict</option>
+              <option value="Personal reasons">Personal reasons</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button type="button" onclick="closeCancelModal()" class="btn-secondary">Keep Booking</button>
+            <button type="submit" class="btn-danger"><i class="fa-solid fa-xmark"></i> Confirm Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function openCancelModal(bookingId, homeName) {
+        document.getElementById('cancel-booking-id').value = bookingId;
+        document.getElementById('cancel-home-name').textContent = homeName;
+        document.getElementById('cancel-modal').classList.add('active');
+      }
+      function closeCancelModal() {
+        document.getElementById('cancel-modal').classList.remove('active');
+      }
+      // Close modal on overlay click
+      document.getElementById('cancel-modal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeCancelModal();
+      });
+
+      // Responsive image width
+      const mq = window.matchMedia('(max-width: 640px)');
+      function handleBookingResize(e) {
+        document.querySelectorAll('main > div > div > div:first-child > a').forEach(a => {
+          if (a.parentElement.parentElement.querySelector('[style*="display: flex; flex-wrap"]')) {
+            a.style.width = e.matches ? '100%' : '250px';
+            a.style.height = e.matches ? '160px' : '180px';
+          }
+        });
+      }
+      mq.addEventListener('change', handleBookingResize);
+    </script>
   </body>
 </html>

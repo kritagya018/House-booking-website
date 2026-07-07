@@ -1,0 +1,112 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-gear" style="color: var(--primary); margin-right: 0.5rem;"></i>Settings
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Manage your account preferences</p>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <% if (success) { %>
+        <div class="toast" style="position: relative; top: 0; right: 0; margin-bottom: 1rem; border-left: 3px solid var(--success); animation: none;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fa-solid fa-check-circle" style="color: var(--success);"></i>
+            <span style="color: var(--text-primary); font-size: 0.9rem;"><%= success %></span>
+          </div>
+        </div>
+      <% } %>
+      <% if (error) { %>
+        <div class="toast" style="position: relative; top: 0; right: 0; margin-bottom: 1rem; border-left: 3px solid var(--danger); animation: none;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fa-solid fa-exclamation-circle" style="color: var(--danger);"></i>
+            <span style="color: var(--text-primary); font-size: 0.9rem;"><%= error %></span>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Change Password -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+          <i class="fa-solid fa-lock" style="color: var(--accent); margin-right: 0.5rem;"></i>Change Password
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Update your password to keep your account secure</p>
+        <form action="/settings/password" method="POST">
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Current Password</label>
+            <input type="password" name="currentPassword" class="form-input" required placeholder="Enter current password">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">New Password</label>
+              <input type="password" name="newPassword" class="form-input" required placeholder="Min 8 characters" minlength="8">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Confirm New Password</label>
+              <input type="password" name="confirmNewPassword" class="form-input" required placeholder="Repeat new password">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-key"></i> Update Password</button>
+        </form>
+      </div>
+
+      <!-- Notification Preferences -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+          <i class="fa-solid fa-bell" style="color: var(--warning); margin-right: 0.5rem;"></i>Notification Preferences
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Choose what notifications you'd like to receive</p>
+        <form action="/settings/notifications" method="POST">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <label style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--bg-elevated); border-radius: 0.75rem; cursor: pointer;">
+              <div>
+                <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">Booking Updates</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Get notified about booking confirmations and cancellations</div>
+              </div>
+              <input type="checkbox" name="bookingUpdates" style="width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer;" <%= profileUser.notificationPreferences && profileUser.notificationPreferences.bookingUpdates ? 'checked' : '' %>>
+            </label>
+            <label style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--bg-elevated); border-radius: 0.75rem; cursor: pointer;">
+              <div>
+                <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">Review Reminders</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Reminders to review properties after your stay</div>
+              </div>
+              <input type="checkbox" name="reviewReminders" style="width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer;" <%= profileUser.notificationPreferences && profileUser.notificationPreferences.reviewReminders ? 'checked' : '' %>>
+            </label>
+            <label style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--bg-elevated); border-radius: 0.75rem; cursor: pointer;">
+              <div>
+                <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">Promotions & Deals</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Special offers and promotional content</div>
+              </div>
+              <input type="checkbox" name="promotions" style="width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer;" <%= profileUser.notificationPreferences && profileUser.notificationPreferences.promotions ? 'checked' : '' %>>
+            </label>
+          </div>
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Save Preferences</button>
+        </form>
+      </div>
+
+      <!-- Account Info -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+          <i class="fa-solid fa-circle-info" style="color: var(--info); margin-right: 0.5rem;"></i>Account Information
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Email</span>
+            <span style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;"><%= profileUser.email %></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Account Type</span>
+            <span class="badge <%= profileUser.userType === 'host' ? 'badge-info' : 'badge-success' %>"><%= profileUser.userType %></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Member Since</span>
+            <span style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;"><%= profileUser.createdAt ? profileUser.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A' %></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

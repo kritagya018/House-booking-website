@@ -1,10 +1,11 @@
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user");
+const Notification = require("../models/notification");
 const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
-    pageTitle: "Login",
+    pageTitle: "Sign In",
     currentPage: "login",
     isLoggedIn: false,
     errors: [],
@@ -15,7 +16,7 @@ exports.getLogin = (req, res, next) => {
 
 exports.getSignup = (req, res, next) => {
   res.render("auth/signup", {
-    pageTitle: "Signup",
+    pageTitle: "Create Account",
     currentPage: "signup",
     isLoggedIn: false,
     errors: [],
@@ -79,12 +80,12 @@ exports.postSignup = [
     return true;
   }),
   
-  (req, res, next) => {
+  async (req, res, next) => {
     const {firstName, lastName, email, password, userType} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).render("auth/signup", {
-        pageTitle: "Signup",
+        pageTitle: "Create Account",
         currentPage: "signup",
         isLoggedIn: false,
         errors: errors.array().map(err => err.msg),
@@ -93,23 +94,32 @@ exports.postSignup = [
       });
     }
 
-    bcrypt.hash(password, 12)
-    .then(hashedPassword => {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({firstName, lastName, email, password: hashedPassword, userType});
-      return user.save();
-    })
-    .then(() => {
+      await user.save();
+
+      // Welcome notification
+      const notification = new Notification({
+        userId: user._id,
+        type: 'welcome',
+        title: 'Welcome to StayEG!',
+        message: `Hi ${firstName}! Welcome to StayEG. ${userType === 'host' ? 'Start listing your properties and earn money.' : 'Explore amazing stays around the world.'}`,
+        link: '/',
+      });
+      await notification.save();
+
       res.redirect("/login");
-    }).catch(err => {
+    } catch(err) {
       return res.status(422).render("auth/signup", {
-        pageTitle: "Signup",
+        pageTitle: "Create Account",
         currentPage: "signup",
         isLoggedIn: false,
         errors: [err.message],
         oldInput: {firstName, lastName, email, userType},
         user: {},
       });
-    });
+    }
   }
 ]
 
@@ -118,7 +128,7 @@ exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({email});
   if (!user) {
     return res.status(422).render("auth/login", {
-      pageTitle: "Login",
+      pageTitle: "Sign In",
       currentPage: "login",
       isLoggedIn: false,
       errors: ["User does not exist"],
@@ -130,7 +140,7 @@ exports.postLogin = async (req, res, next) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return res.status(422).render("auth/login", {
-      pageTitle: "Login",
+      pageTitle: "Sign In",
       currentPage: "login",
       isLoggedIn: false,
       errors: ["Invalid Password"],

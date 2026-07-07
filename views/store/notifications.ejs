@@ -1,0 +1,70 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-bell" style="color: var(--primary); margin-right: 0.5rem;"></i>Notifications
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Stay updated with your bookings and activities</p>
+      </div>
+
+      <% if (notifications.length > 0) { %>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <% notifications.forEach(notif => { %>
+            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; display: flex; gap: 1rem; align-items: flex-start; transition: all 0.2s; <%= !notif.read ? 'border-left: 3px solid var(--primary);' : '' %>">
+              <!-- Icon -->
+              <div style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+                <% if (notif.type === 'booking_confirmed') { %>
+                  background: rgba(16,185,129,0.15); color: var(--success);
+                <% } else if (notif.type === 'booking_cancelled') { %>
+                  background: rgba(239,68,68,0.15); color: var(--danger);
+                <% } else if (notif.type === 'welcome') { %>
+                  background: rgba(139,92,246,0.15); color: var(--accent);
+                <% } else if (notif.type === 'review_reminder') { %>
+                  background: rgba(245,158,11,0.15); color: var(--warning);
+                <% } else { %>
+                  background: rgba(59,130,246,0.15); color: var(--info);
+                <% } %>
+              ">
+                <% if (notif.type === 'booking_confirmed') { %>
+                  <i class="fa-solid fa-check-circle"></i>
+                <% } else if (notif.type === 'booking_cancelled') { %>
+                  <i class="fa-solid fa-xmark-circle"></i>
+                <% } else if (notif.type === 'welcome') { %>
+                  <i class="fa-solid fa-sparkles"></i>
+                <% } else if (notif.type === 'review_reminder') { %>
+                  <i class="fa-solid fa-star"></i>
+                <% } else { %>
+                  <i class="fa-solid fa-info-circle"></i>
+                <% } %>
+              </div>
+              <!-- Content -->
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.3rem;">
+                  <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);"><%= notif.title %></h4>
+                  <span style="font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; margin-left: 1rem;">
+                    <%= notif.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %>
+                  </span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;"><%= notif.message %></p>
+                <% if (notif.link) { %>
+                  <a href="<%= notif.link %>" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--primary); text-decoration: none; margin-top: 0.5rem; font-weight: 500;">
+                    View details <i class="fa-solid fa-arrow-right" style="font-size: 0.65rem;"></i>
+                  </a>
+                <% } %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border);">
+          <i class="fa-regular fa-bell" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">No notifications</p>
+          <p style="color: var(--text-muted);">You're all caught up!</p>
+        </div>
+      <% } %>
+    </main>
+  </body>
+</html>

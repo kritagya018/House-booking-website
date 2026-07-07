@@ -1,88 +1,114 @@
 <%- include('../partials/head') %>
   </head>
-  <body class="bg-slate-50">
+  <body>
     <%- include('../partials/nav') %>
     
     <!-- Hero Section -->
-    <div class="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 w-full h-full">
-        <img src="/images/hero.png" alt="Luxury Villa" class="w-full h-full object-cover transform scale-105" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+    <div style="position: relative; width: 100%; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+      <div style="position: absolute; inset: 0;">
+        <img src="/images/hero.png" alt="Luxury Stay" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3);" />
+        <div style="position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-dark) 0%, transparent 40%, transparent 60%, rgba(12,15,26,0.6) 100%);"></div>
       </div>
-      <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-10">
-        <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-lg tracking-tight leading-tight">
-          Find your next <br/><span class="text-rose-400">perfect stay.</span>
+      <div style="position: relative; z-index: 10; text-align: center; padding: 2rem; max-width: 800px; margin: 0 auto;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 9999px; padding: 0.4rem 1rem; margin-bottom: 1.5rem;">
+          <i class="fa-solid fa-sparkles" style="color: var(--primary);"></i>
+          <span style="font-size: 0.85rem; font-weight: 500; color: var(--primary-light);">Discover Extraordinary Places</span>
+        </div>
+        <h1 style="font-size: 3.5rem; font-weight: 900; color: white; margin-bottom: 1.25rem; line-height: 1.1; letter-spacing: -0.03em;">
+          Your Next Great<br/><span class="brand-text">Stay Awaits</span>
         </h1>
-        <p class="text-xl md:text-2xl text-slate-200 mb-10 font-light drop-shadow max-w-2xl mx-auto">
-          Discover luxury villas, cozy cabins, and extraordinary homes around the world.
+        <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 550px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+          Explore premium villas, cozy apartments, and unique stays handpicked for unforgettable experiences.
         </p>
-        <form action="/homes" method="GET" class="bg-white p-2 rounded-full flex items-center max-w-2xl w-full mx-auto shadow-2xl">
-          <div class="flex-grow pl-6 pr-2">
-            <input type="text" name="search" placeholder="Where do you want to go?" class="w-full bg-transparent outline-none text-slate-700 text-lg">
+        <form action="/homes" method="GET" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 9999px; display: flex; align-items: center; max-width: 550px; margin: 0 auto; padding: 0.35rem;">
+          <div style="flex: 1; padding-left: 1.25rem;">
+            <input type="text" name="search" placeholder="Where do you want to stay?" style="width: 100%; background: transparent; border: none; outline: none; color: var(--text-primary); font-size: 0.95rem; font-family: inherit;">
           </div>
-          <button type="submit" class="btn-gradient text-white px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2">
+          <button type="submit" class="btn-primary" style="border-radius: 9999px; padding: 0.75rem 1.5rem; font-size: 0.9rem;">
             <i class="fa-solid fa-search"></i> Search
           </button>
         </form>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-20 max-w-7xl">
-      <div class="flex flex-col md:flex-row justify-between md:items-end mb-10 gap-4">
-        <div>
-          <h2 class="text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">Explore <span class="gradient-text">Top Destinations</span></h2>
-          <p class="text-slate-500 text-lg mb-2 md:mb-0">Handpicked premium properties for an unforgettable experience.</p>
+    <!-- Stats Strip -->
+    <div style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div style="max-width: 1000px; margin: 0 auto; padding: 1.5rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">500+</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Properties</div>
         </div>
-        
-        <div class="flex items-center gap-4">
-          <a href="/homes" class="text-rose-600 font-semibold hover:text-rose-700 hidden md:flex items-center gap-2 transition-colors">
-            View all homes <i class="fa-solid fa-arrow-right"></i>
-          </a>
-          
-          <div class="relative inline-block text-left" id="destination-dropdown-container">
-            <div>
-              <button type="button" id="destination-button" class="inline-flex justify-center items-center w-full md:w-auto rounded-full border border-slate-300 shadow-sm px-6 py-3 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
-                Select Location
-                <i class="fa-solid fa-chevron-down ml-2 text-slate-400"></i>
-              </button>
-            </div>
-            <div id="destination-menu" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-20">
-              <div class="py-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a href="/homes?location=Goa" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-umbrella-beach text-rose-400 mr-3 w-4 text-center"></i> Goa</a>
-                <a href="/homes?location=Manali" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-mountain text-rose-400 mr-3 w-4 text-center"></i> Manali</a>
-                <a href="/homes?location=Mumbai" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-city text-rose-400 mr-3 w-4 text-center"></i> Mumbai</a>
-                <a href="/homes?location=Delhi" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-monument text-rose-400 mr-3 w-4 text-center"></i> Delhi</a>
-                <a href="/homes?location=Kerala" class="block px-4 py-3 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 font-medium transition-colors"><i class="fa-solid fa-water text-rose-400 mr-3 w-4 text-center"></i> Kerala</a>
-              </div>
-            </div>
-          </div>
+        <div style="width: 1px; background: var(--border);"></div>
+        <div style="text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">50+</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Cities</div>
+        </div>
+        <div style="width: 1px; background: var(--border);"></div>
+        <div style="text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">10K+</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Happy Guests</div>
+        </div>
+        <div style="width: 1px; background: var(--border);"></div>
+        <div style="text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">4.8</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Avg Rating</div>
         </div>
       </div>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <!-- Featured Stays -->
+    <main style="max-width: 1320px; margin: 0 auto; padding: 4rem 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; letter-spacing: -0.02em;">Featured <span class="brand-text">Stays</span></h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Handpicked premium properties for your next adventure</p>
+        </div>
+        <a href="/homes" style="color: var(--primary); font-weight: 600; font-size: 0.9rem; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s;">
+          View all stays <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem;">
         <% registeredHomes.forEach(home => { %>
-          <div class="bg-white rounded-2xl overflow-hidden card-hover border border-slate-100 relative group">
-            <a href="/homes/<%= home._id %>" class="block">
-              <div class="relative h-64 overflow-hidden">
-                <img src="/<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                  <i class="fa-solid fa-star text-yellow-500 text-sm"></i>
-                  <span class="font-bold text-slate-800 text-sm"><%= home.rating %></span>
+          <div class="stay-card" style="display: flex; flex-direction: column;">
+            <a href="/homes/<%= home._id %>" style="display: block; text-decoration: none; color: inherit; flex: 1;">
+              <div style="position: relative; height: 220px; overflow: hidden;">
+                <img src="/<%= home.photo %>" alt="<%= home.houseName %>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;">
+                <!-- Rating Badge -->
+                <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 0.3rem 0.6rem; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
+                  <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 0.7rem;"></i>
+                  <span style="font-weight: 700; color: white; font-size: 0.8rem;">
+                    <%= ratingMap[home._id.toString()] ? ratingMap[home._id.toString()].avg.toFixed(1) : home.rating %>
+                  </span>
+                  <% if (ratingMap[home._id.toString()]) { %>
+                    <span style="color: var(--text-muted); font-size: 0.7rem;">(<%= ratingMap[home._id.toString()].count %>)</span>
+                  <% } %>
                 </div>
+                <!-- Favourite Button -->
+                <% if (isLoggedIn && user && user.userType === 'guest') { %>
+                  <button class="heart-btn <%= userFavs.includes(home._id.toString()) ? 'active' : '' %>" 
+                    onclick="toggleFav(event, '<%= home._id %>', this)"
+                    style="position: absolute; top: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                    <i class="fa-<%= userFavs.includes(home._id.toString()) ? 'solid' : 'regular' %> fa-heart" style="color: <%= userFavs.includes(home._id.toString()) ? '#ef4444' : 'white' %>;"></i>
+                  </button>
+                <% } %>
               </div>
-              <div class="p-6">
-                <h3 class="text-xl font-bold text-slate-800 truncate mb-1"><%= home.houseName %></h3>
-                <p class="text-slate-500 mb-4 flex items-center text-sm font-medium">
-                  <i class="fa-solid fa-location-dot mr-2 text-slate-400"></i><%= home.location %>
+              <div style="padding: 1.25rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= home.houseName %></h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.75rem;">
+                  <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> <%= home.location %>
                 </p>
-                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-bed"></i> <%= home.bedrooms %> bed</span>
+                  <span style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-users"></i> <%= home.guests %> guests</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border);">
                   <div>
-                    <span class="text-2xl font-extrabold text-slate-800">Rs <%= home.price %></span>
-                    <span class="text-slate-500 text-sm font-medium"> / night</span>
+                    <span style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">₹<%= home.price.toLocaleString() %></span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);"> / night</span>
                   </div>
-                  <div class="bg-rose-50 text-rose-600 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
-                    <i class="fa-solid fa-arrow-right"></i>
+                  <div style="background: rgba(16,185,129,0.1); color: var(--primary); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s;">
+                    <i class="fa-solid fa-arrow-right" style="font-size: 0.75rem;"></i>
                   </div>
                 </div>
               </div>
@@ -90,25 +116,57 @@
           </div>
         <% }) %>
       </div>
+
+      <% if (registeredHomes.length === 0) { %>
+        <div style="text-align: center; padding: 4rem 2rem;">
+          <i class="fa-solid fa-home" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">No stays available yet</p>
+          <p style="color: var(--text-muted);">Check back soon for amazing properties!</p>
+        </div>
+      <% } %>
     </main>
 
+    <!-- Footer -->
+    <footer style="background: var(--bg-card); border-top: 1px solid var(--border); padding: 3rem 1.5rem;">
+      <div style="max-width: 1320px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.85rem; color: white;" class="brand-gradient">S</div>
+          <span style="font-size: 1rem; font-weight: 700; color: var(--text-primary);">Stay<span class="brand-text">EG</span></span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem;">© 2026 StayEG. All rights reserved.</p>
+        <div style="display: flex; gap: 1rem;">
+          <a href="#" style="color: var(--text-muted); font-size: 1rem; transition: color 0.2s;"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" style="color: var(--text-muted); font-size: 1rem; transition: color 0.2s;"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" style="color: var(--text-muted); font-size: 1rem; transition: color 0.2s;"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+      </div>
+    </footer>
+
     <script>
-      // Dropdown toggle logic
-      const destBtn = document.getElementById('destination-button');
-      const destMenu = document.getElementById('destination-menu');
-      
-      if (destBtn && destMenu) {
-        destBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          destMenu.classList.toggle('hidden');
-        });
-        
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!destBtn.contains(e.target) && !destMenu.contains(e.target)) {
-            destMenu.classList.add('hidden');
+      // Toggle Favourite via AJAX
+      function toggleFav(e, homeId, btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        fetch('/favourites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: homeId })
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            const icon = btn.querySelector('i');
+            if (data.action === 'added') {
+              btn.classList.add('active');
+              icon.className = 'fa-solid fa-heart';
+              icon.style.color = '#ef4444';
+            } else {
+              btn.classList.remove('active');
+              icon.className = 'fa-regular fa-heart';
+              icon.style.color = 'white';
+            }
           }
-        });
+        }).catch(() => {});
       }
     </script>
   </body>

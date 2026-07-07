@@ -1,0 +1,96 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main style="max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <!-- Profile Header -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          <div class="avatar avatar-lg">
+            <% if (profileUser.avatar) { %>
+              <img src="/<%= profileUser.avatar %>" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            <% } else { %>
+              <%= profileUser.firstName.charAt(0).toUpperCase() %><%= profileUser.lastName ? profileUser.lastName.charAt(0).toUpperCase() : '' %>
+            <% } %>
+          </div>
+          <div style="flex: 1;">
+            <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem;">
+              <%= profileUser.firstName %> <%= profileUser.lastName || '' %>
+            </h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-envelope"></i> <%= profileUser.email %>
+            </p>
+            <% if (profileUser.phone) { %>
+              <p style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+                <i class="fa-solid fa-phone"></i> <%= profileUser.phone %>
+              </p>
+            <% } %>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+              <span class="badge <%= profileUser.userType === 'host' ? 'badge-info' : 'badge-success' %>">
+                <i class="fa-solid fa-<%= profileUser.userType === 'host' ? 'key' : 'user' %>" style="margin-right: 0.3rem;"></i>
+                <%= profileUser.userType %>
+              </span>
+              <span class="badge badge-warning">
+                Member since <%= profileUser.createdAt ? profileUser.createdAt.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) : 'N/A' %>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <% if (profileUser.bio) { %>
+          <div style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border);">
+            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;"><%= profileUser.bio %></p>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Stats -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+          <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;"><%= stats.bookings %></div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Bookings</div>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+          <div style="font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 0.25rem;"><%= stats.reviews %></div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Reviews</div>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+          <div style="font-size: 2rem; font-weight: 800; color: #ef4444; margin-bottom: 0.25rem;"><%= stats.favourites %></div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Favourites</div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Form -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem;">
+          <i class="fa-solid fa-pen-to-square" style="color: var(--primary); margin-right: 0.5rem;"></i>Edit Profile
+        </h3>
+        <form action="/profile" method="POST" enctype="multipart/form-data">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">First Name</label>
+              <input type="text" name="firstName" value="<%= profileUser.firstName %>" class="form-input" required>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Last Name</label>
+              <input type="text" name="lastName" value="<%= profileUser.lastName || '' %>" class="form-input">
+            </div>
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Phone Number</label>
+            <input type="tel" name="phone" value="<%= profileUser.phone || '' %>" placeholder="+91 XXXXX XXXXX" class="form-input">
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Bio</label>
+            <textarea name="bio" placeholder="Tell us about yourself..." class="form-input" style="min-height: 80px; resize: vertical;"><%= profileUser.bio || '' %></textarea>
+          </div>
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Profile Photo</label>
+            <input type="file" name="photo" accept="image/jpg, image/jpeg, image/png" class="form-input" style="padding: 0.5rem;">
+          </div>
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Save Changes</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

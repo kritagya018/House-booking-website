@@ -1,49 +1,55 @@
 <%- include('../partials/head') %>
   </head>
-  <body class="bg-slate-50">
+  <body>
     <%- include('../partials/nav') %>
-    <main class="container mx-auto px-4 py-12 max-w-7xl">
-      <div class="mb-10 flex flex-col items-center">
-        <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mb-4">
-          <i class="fa-solid fa-heart text-rose-500 text-3xl"></i>
+    <main style="max-width: 1320px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+          <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem;">My <span class="brand-text">Favourites</span></h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Properties you've saved for later</p>
         </div>
-        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
-          Your <span class="gradient-text">Favourites</span>
-        </h2>
       </div>
 
       <% if (favouriteHomes.length > 0) { %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem;">
           <% favouriteHomes.forEach(home => { %>
-            <div class="bg-white rounded-2xl overflow-hidden card-hover border border-slate-100 relative group flex flex-col h-full">
-              <a href="/homes/<%= home._id %>" class="block flex-grow">
-                <div class="relative h-56 overflow-hidden">
-                  <img src="/<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                  <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                    <i class="fa-solid fa-star text-yellow-500 text-sm"></i>
-                    <span class="font-bold text-slate-800 text-sm"><%= home.rating %></span>
+            <div class="stay-card" style="display: flex; flex-direction: column;">
+              <a href="/homes/<%= home._id %>" style="display: block; text-decoration: none; color: inherit; flex: 1;">
+                <div style="position: relative; height: 200px; overflow: hidden;">
+                  <img src="/<%= home.photo %>" alt="<%= home.houseName %>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;">
+                  <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 0.3rem 0.6rem; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
+                    <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 0.7rem;"></i>
+                    <span style="font-weight: 700; color: white; font-size: 0.8rem;"><%= ratingMap[home._id.toString()] ? ratingMap[home._id.toString()].avg.toFixed(1) : home.rating %></span>
+                  </div>
+                  <!-- Filled heart (since it's in favourites) -->
+                  <div style="position: absolute; top: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-heart" style="color: #ef4444; font-size: 1rem;"></i>
                   </div>
                 </div>
-                <div class="p-6 flex flex-col flex-grow">
-                  <h3 class="text-xl font-bold text-slate-800 truncate mb-1"><%= home.houseName %></h3>
-                  <p class="text-slate-500 mb-4 flex items-center text-sm font-medium">
-                    <i class="fa-solid fa-location-dot mr-2 text-slate-400"></i><%= home.location %>
+                <div style="padding: 1.25rem;">
+                  <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= home.houseName %></h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> <%= home.location %>
                   </p>
-                  <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
+                  <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-bed"></i> <%= home.bedrooms %></span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-users"></i> <%= home.guests %></span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border);">
                     <div>
-                      <span class="text-2xl font-extrabold text-slate-800">Rs <%= home.price %></span>
-                      <span class="text-slate-500 text-sm font-medium"> / night</span>
+                      <span style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary);">₹<%= home.price.toLocaleString() %></span>
+                      <span style="font-size: 0.8rem; color: var(--text-muted);"> / night</span>
                     </div>
                   </div>
                 </div>
               </a>
-              <div class="px-6 pb-6 pt-0 flex gap-3">
-                <a href="/homes/<%= home._id %>" class="btn-gradient text-white flex-1 text-center py-3 rounded-xl font-bold">
-                  Details
+              <div style="padding: 0 1.25rem 1.25rem; display: flex; gap: 0.5rem;">
+                <a href="/homes/<%= home._id %>" class="btn-primary" style="flex: 1; text-decoration: none; font-size: 0.85rem; padding: 0.6rem;">
+                  View Details
                 </a>
-                <form action="/favourites/delete/<%= home._id %>" method="POST" class="flex-none">
-                  <button type="submit" class="bg-slate-100 text-slate-500 hover:bg-rose-50 hover:text-rose-600 p-3 rounded-xl transition-colors h-full flex items-center justify-center w-12">
-                    <i class="fa-solid fa-trash"></i>
+                <form action="/favourites/delete/<%= home._id %>" method="POST" style="flex-shrink: 0;">
+                  <button type="submit" class="btn-danger" style="padding: 0.6rem 0.8rem;" title="Remove from favourites">
+                    <i class="fa-solid fa-heart-crack"></i>
                   </button>
                 </form>
               </div>
@@ -51,11 +57,11 @@
           <% }) %>
         </div>
       <% } else { %>
-        <div class="bg-white rounded-3xl p-12 text-center max-w-2xl mx-auto border border-slate-100 shadow-sm mt-8">
-          <i class="fa-regular fa-heart text-6xl text-slate-200 mb-4"></i>
-          <p class="text-2xl text-slate-700 font-medium mb-4">No favourites yet!</p>
-          <p class="text-slate-500 mb-8">Browse our homes and tap the heart icon to save them here.</p>
-          <a href="/homes" class="btn-gradient text-white px-8 py-3 rounded-full font-bold">Explore Homes</a>
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border);">
+          <i class="fa-regular fa-heart" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">No favourites yet</p>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Tap the heart icon on any property to save it here</p>
+          <a href="/homes" class="btn-primary" style="text-decoration: none;">Explore Stays</a>
         </div>
       <% } %>
     </main>

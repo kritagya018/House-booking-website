@@ -1,60 +1,297 @@
 <%- include('../partials/head') %>
   </head>
-  <body class="bg-slate-50">
-      <%- include('../partials/nav') %>
-      <main class="container mx-auto px-4 py-12 max-w-6xl">
-          <div class="bg-white shadow-2xl rounded-3xl overflow-hidden border border-slate-100">
-              <div class="relative h-[500px]">
-                  <img src="/<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
-                  <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-                      <i class="fa-solid fa-star text-yellow-500"></i>
-                      <span class="font-extrabold text-slate-800 text-lg"><%= home.rating %> <span class="font-normal text-slate-500 text-sm">/ 5</span></span>
-                  </div>
-              </div>
-              
-              <div class="p-10 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div class="md:col-span-2 space-y-8">
-                      <div>
-                          <h2 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight mb-4">
-                              <%= home.houseName %>
-                          </h2>
-                          <p class="text-slate-500 text-lg flex items-center">
-                              <i class="fa-solid fa-location-dot text-rose-500 mr-3 text-xl"></i> <%= home.location %>
-                          </p>
-                      </div>
+  <body>
+    <%- include('../partials/nav') %>
+    <main style="max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <!-- Breadcrumb -->
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.85rem;">
+        <a href="/" style="color: var(--text-muted); text-decoration: none;">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.6rem; color: var(--text-muted);"></i>
+        <a href="/homes" style="color: var(--text-muted); text-decoration: none;">Explore</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.6rem; color: var(--text-muted);"></i>
+        <span style="color: var(--text-primary);"><%= home.houseName %></span>
+      </div>
 
-                      <div class="border-t border-slate-100 pt-8">
-                          <h3 class="text-2xl font-bold text-slate-800 mb-4">About this home</h3>
-                          <p class="text-slate-600 leading-relaxed text-lg"><%= home.description %></p>
-                      </div>
-                  </div>
-                  
-                  <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 h-fit sticky top-32">
-                      <div class="flex items-end gap-2 mb-8 border-b border-slate-200 pb-6">
-                          <span class="text-4xl font-extrabold text-slate-800">Rs <%= home.price %></span>
-                          <span class="text-slate-500 font-medium pb-1">/ night</span>
-                      </div>
-                      
-                      <div class="flex flex-col gap-4">
-                          <form action="/bookings" method="POST" class="w-full">
-                              <input type="hidden" name="homeId" value="<%= home._id %>">
-                              <button type="submit" class="btn-gradient w-full text-white font-bold text-lg py-4 rounded-xl shadow-lg flex justify-center items-center gap-2">
-                                  <i class="fa-solid fa-calendar-check"></i> Book Now
-                              </button>
-                          </form>
-                          
-                          <form action="/favourites" method="POST" class="w-full">
-                              <input type="hidden" name="id" value="<%= home._id %>">
-                              <button type="submit" class="w-full bg-white border-2 border-slate-200 text-slate-700 hover:border-rose-500 hover:text-rose-600 font-bold text-lg py-3.5 rounded-xl transition-all flex justify-center items-center gap-2">
-                                  <i class="fa-regular fa-heart"></i> Add to Favourites
-                              </button>
-                          </form>
-                      </div>
-                      
-                      <p class="text-center text-slate-400 text-sm mt-6">You won't be charged yet</p>
-                  </div>
+      <!-- Property Image -->
+      <div style="border-radius: 1rem; overflow: hidden; height: 420px; position: relative; margin-bottom: 2rem;">
+        <img src="/<%= home.photo %>" alt="<%= home.houseName %>" style="width: 100%; height: 100%; object-fit: cover;">
+        <div style="position: absolute; top: 1rem; left: 1rem; display: flex; gap: 0.5rem;">
+          <span class="badge badge-success"><i class="fa-solid fa-check-circle" style="margin-right: 0.3rem;"></i>Verified</span>
+        </div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 2rem 1.5rem 1.5rem;">
+          <h1 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 0.3rem;"><%= home.houseName %></h1>
+          <p style="color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 0.4rem; font-size: 0.95rem;">
+            <i class="fa-solid fa-location-dot"></i> <%= home.location %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 380px; gap: 2rem; align-items: start;">
+        <!-- Left: Details -->
+        <div>
+          <!-- Quick Info -->
+          <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1.25rem;">
+              <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
+              <div>
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><%= avgRating %></div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);"><%= reviews.length %> reviews</div>
               </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1.25rem;">
+              <i class="fa-solid fa-bed" style="color: var(--primary);"></i>
+              <div>
+                <div style="font-weight: 700; color: var(--text-primary);"><%= home.bedrooms %></div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Bedrooms</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1.25rem;">
+              <i class="fa-solid fa-users" style="color: var(--accent);"></i>
+              <div>
+                <div style="font-weight: 700; color: var(--text-primary);"><%= home.guests %></div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Max Guests</div>
+              </div>
+            </div>
           </div>
-      </main>
+
+          <!-- Description -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">About this property</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem;"><%= home.description || 'A wonderful property waiting for your visit. Contact host for more details.' %></p>
+          </div>
+
+          <!-- Reviews Section -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">
+                <i class="fa-solid fa-star" style="color: #f59e0b; margin-right: 0.4rem;"></i>
+                <%= avgRating %> · <%= reviews.length %> Review<%= reviews.length !== 1 ? 's' : '' %>
+              </h3>
+            </div>
+
+            <% if (reviews.length > 0) { %>
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <% reviews.forEach(review => { %>
+                  <div style="background: var(--bg-elevated); border-radius: 0.75rem; padding: 1.25rem; border: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar" style="width: 36px; height: 36px; font-size: 0.75rem;">
+                          <%= review.userId ? review.userId.firstName.charAt(0).toUpperCase() : 'U' %>
+                        </div>
+                        <div>
+                          <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">
+                            <%= review.userId ? review.userId.firstName + ' ' + (review.userId.lastName || '') : 'Anonymous' %>
+                          </div>
+                          <div style="font-size: 0.75rem; color: var(--text-muted);"><%= review.createdAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) %></div>
+                        </div>
+                      </div>
+                      <div style="display: flex; gap: 2px;">
+                        <% for (let i = 1; i <= 5; i++) { %>
+                          <i class="fa-solid fa-star" style="font-size: 0.7rem; color: <%= i <= review.rating ? '#f59e0b' : 'var(--text-muted)' %>;"></i>
+                        <% } %>
+                      </div>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;"><%= review.comment %></p>
+                  </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">No reviews yet. Be the first to review!</p>
+            <% } %>
+
+            <!-- Write Review Form -->
+            <% if (isLoggedIn && hasBooked && !hasReviewed) { %>
+              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">Write a Review</h4>
+                <form action="/reviews" method="POST">
+                  <input type="hidden" name="homeId" value="<%= home._id %>">
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem;">Rating</label>
+                    <div class="star-rating" id="star-rating">
+                      <% for (let i = 1; i <= 5; i++) { %>
+                        <i class="fa-solid fa-star" data-rating="<%= i %>" style="font-size: 1.3rem; cursor: pointer;"></i>
+                      <% } %>
+                    </div>
+                    <input type="hidden" name="rating" id="rating-input" value="5" required>
+                  </div>
+                  <div style="margin-bottom: 1rem;">
+                    <textarea name="comment" placeholder="Share your experience..." class="form-input" style="min-height: 100px; resize: vertical;" required maxlength="500"></textarea>
+                  </div>
+                  <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Review
+                  </button>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Right: Booking Card -->
+        <div style="position: sticky; top: 5rem;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);">
+              <span style="font-size: 2rem; font-weight: 800; color: var(--text-primary);">₹<%= home.price.toLocaleString() %></span>
+              <span style="color: var(--text-muted); font-size: 0.9rem;">/ night</span>
+            </div>
+
+            <% if (isLoggedIn) { %>
+              <form action="/bookings" method="POST">
+                <input type="hidden" name="homeId" value="<%= home._id %>">
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;">Check-in</label>
+                  <input type="date" name="checkIn" class="form-input" required id="checkIn" min="<%= new Date().toISOString().split('T')[0] %>">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;">Check-out</label>
+                  <input type="date" name="checkOut" class="form-input" required id="checkOut">
+                </div>
+                <div style="margin-bottom: 1.25rem;">
+                  <label style="display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;">Guests</label>
+                  <input type="number" name="guests" value="1" min="1" max="<%= home.guests %>" class="form-input">
+                </div>
+
+                <!-- Price Breakdown -->
+                <div id="price-breakdown" style="display: none; margin-bottom: 1.25rem; padding: 1rem; background: var(--bg-elevated); border-radius: 0.75rem;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">₹<%= home.price.toLocaleString() %> × <span id="nights-count">0</span> nights</span>
+                    <span style="color: var(--text-primary); font-weight: 600;" id="subtotal">₹0</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Service fee</span>
+                    <span style="color: var(--text-primary); font-weight: 600;" id="service-fee">₹0</span>
+                  </div>
+                  <div style="border-top: 1px solid var(--border); padding-top: 0.5rem; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-primary); font-weight: 700;">Total</span>
+                    <span style="color: var(--primary); font-weight: 800; font-size: 1.1rem;" id="total-price">₹0</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1rem;">
+                  <i class="fa-solid fa-calendar-check"></i> Reserve Now
+                </button>
+              </form>
+
+              <!-- Favourite Toggle -->
+              <button onclick="toggleFavDetail('<%= home._id %>')" class="btn-secondary" style="width: 100%; margin-top: 0.75rem;" id="fav-btn-detail">
+                <i class="fa-<%= isFavourited ? 'solid' : 'regular' %> fa-heart" style="color: <%= isFavourited ? '#ef4444' : 'inherit' %>;"></i>
+                <%= isFavourited ? 'Remove from Favourites' : 'Add to Favourites' %>
+              </button>
+            <% } else { %>
+              <a href="/login" class="btn-primary" style="width: 100%; text-decoration: none; display: flex; padding: 0.9rem; font-size: 1rem;">
+                <i class="fa-solid fa-lock"></i> Sign in to Book
+              </a>
+            <% } %>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.75rem;">You won't be charged yet</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Star rating interaction
+      const stars = document.querySelectorAll('#star-rating i');
+      const ratingInput = document.getElementById('rating-input');
+      if (stars.length) {
+        stars.forEach(star => {
+          star.addEventListener('click', () => {
+            const val = star.dataset.rating;
+            ratingInput.value = val;
+            stars.forEach(s => {
+              s.classList.toggle('active', s.dataset.rating <= val);
+            });
+          });
+          star.addEventListener('mouseenter', () => {
+            const val = star.dataset.rating;
+            stars.forEach(s => {
+              s.style.color = s.dataset.rating <= val ? '#f59e0b' : 'var(--text-muted)';
+            });
+          });
+        });
+        document.getElementById('star-rating').addEventListener('mouseleave', () => {
+          const val = ratingInput.value;
+          stars.forEach(s => {
+            s.style.color = s.dataset.rating <= val ? '#f59e0b' : 'var(--text-muted)';
+          });
+        });
+        // Initialize with 5 stars selected
+        stars.forEach(s => s.classList.add('active'));
+      }
+
+      // Price calculation
+      const checkIn = document.getElementById('checkIn');
+      const checkOut = document.getElementById('checkOut');
+      const pricePerNight = <%= home.price %>;
+
+      function calcPrice() {
+        if (checkIn.value && checkOut.value) {
+          const d1 = new Date(checkIn.value);
+          const d2 = new Date(checkOut.value);
+          const nights = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+          if (nights > 0) {
+            const subtotal = pricePerNight * nights;
+            const fee = Math.round(subtotal * 0.05);
+            document.getElementById('price-breakdown').style.display = 'block';
+            document.getElementById('nights-count').textContent = nights;
+            document.getElementById('subtotal').textContent = '₹' + subtotal.toLocaleString();
+            document.getElementById('service-fee').textContent = '₹' + fee.toLocaleString();
+            document.getElementById('total-price').textContent = '₹' + (subtotal + fee).toLocaleString();
+          } else {
+            document.getElementById('price-breakdown').style.display = 'none';
+          }
+        }
+      }
+
+      if (checkIn) {
+        checkIn.addEventListener('change', () => {
+          if (checkIn.value) {
+            const next = new Date(checkIn.value);
+            next.setDate(next.getDate() + 1);
+            checkOut.min = next.toISOString().split('T')[0];
+            if (checkOut.value && new Date(checkOut.value) <= new Date(checkIn.value)) {
+              checkOut.value = next.toISOString().split('T')[0];
+            }
+          }
+          calcPrice();
+        });
+        checkOut.addEventListener('change', calcPrice);
+      }
+
+      // Favourite toggle
+      function toggleFavDetail(homeId) {
+        fetch('/favourites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: homeId })
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            const btn = document.getElementById('fav-btn-detail');
+            const icon = btn.querySelector('i');
+            if (data.action === 'added') {
+              icon.className = 'fa-solid fa-heart';
+              icon.style.color = '#ef4444';
+              btn.innerHTML = '<i class="fa-solid fa-heart" style="color: #ef4444;"></i> Remove from Favourites';
+            } else {
+              icon.className = 'fa-regular fa-heart';
+              icon.style.color = 'inherit';
+              btn.innerHTML = '<i class="fa-regular fa-heart"></i> Add to Favourites';
+            }
+          }
+        }).catch(() => {});
+      }
+
+      // Responsive grid
+      const mq = window.matchMedia('(max-width: 768px)');
+      function handleDetailResize(e) {
+        const grid = document.querySelector('main > div:last-child');
+        if (grid && grid.style) {
+          grid.style.gridTemplateColumns = e.matches ? '1fr' : '1fr 380px';
+        }
+      }
+      mq.addEventListener('change', handleDetailResize);
+      handleDetailResize(mq);
+    </script>
   </body>
 </html>

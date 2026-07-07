@@ -2,52 +2,71 @@
   </head>
   <body>
     <%- include('../partials/nav') %>
-    <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
-      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= editing ? "Edit" : "Register"%> Your Home on AirBnB</h1>
-      <form action="/host/<%= editing ? "edit-home" : "add-home"%>" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
-        <input type="hidden" name="id" value="<%= editing ? home._id : ''%>" />
-        <input
-          type="text"
-          name="houseName"
-          value="<%= editing ? home.houseName : ''%>"
-          placeholder="Enter your House Name"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        <input
-          type="text"
-          name="price"
-          value="<%= editing ? home.price : ''%>"
-          placeholder="Price Per Night"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        <input
-          type="text"
-          name="location"
-          value="<%= editing ? home.location : ''%>"
-          placeholder="Location"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        <input
-          type="text"
-          name="rating"
-          value="<%= editing ? home.rating : ''%>"
-          placeholder="Rating (1-5)"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        
-        <div class="flex gap-4 mb-4">
-          <input type="number" name="bedrooms" value="<%= editing ? home.bedrooms : ''%>" placeholder="Bedrooms" class="w-1/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-          <input type="number" name="guests" value="<%= editing ? home.guests : ''%>" placeholder="Max Guests" class="w-1/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-          <input type="number" name="hoursOfStay" value="<%= editing ? home.hoursOfStay : ''%>" placeholder="Max Stay (Hours)" class="w-1/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        </div>
+    <main style="max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 1.25rem; padding: 2rem;">
+        <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-<%= editing ? 'pen-to-square' : 'plus-circle' %>" style="color: var(--primary); margin-right: 0.5rem;"></i>
+          <%= editing ? "Edit Property" : "List Your Property" %>
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;"><%= editing ? "Update your property details" : "Add a new property to StayEG" %></p>
 
-        <input
-          type="file"
-          name="photo"
-          accept="image/jpg, image/jpeg, image/png"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
-        <textarea
-          name="description"
-          placeholder="Describe your home"
-          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"><%= editing ? home.description : ''%></textarea>
-        <input type="submit" value="<%= editing ? "Update Home" : "Add Home"%>" class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" />
-      </form>
+        <form action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<%= editing ? home._id : '' %>" />
+          
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Property Name</label>
+            <input type="text" name="houseName" value="<%= editing ? home.houseName : '' %>" placeholder="e.g. Sunset Villa, Cozy Apartment" class="form-input" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Price Per Night (₹)</label>
+              <input type="number" name="price" value="<%= editing ? home.price : '' %>" placeholder="2000" class="form-input" required>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Location</label>
+              <input type="text" name="location" value="<%= editing ? home.location : '' %>" placeholder="e.g. Goa, Mumbai" class="form-input" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Rating</label>
+              <input type="number" name="rating" value="<%= editing ? home.rating : '' %>" placeholder="1-5" min="1" max="5" step="0.1" class="form-input" required>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Bedrooms</label>
+              <input type="number" name="bedrooms" value="<%= editing ? home.bedrooms : '' %>" placeholder="1" min="1" class="form-input">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Max Guests</label>
+              <input type="number" name="guests" value="<%= editing ? home.guests : '' %>" placeholder="2" min="1" class="form-input">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Stay (Hrs)</label>
+              <input type="number" name="hoursOfStay" value="<%= editing ? home.hoursOfStay : '' %>" placeholder="24" class="form-input">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Property Photo</label>
+            <input type="file" name="photo" accept="image/jpg, image/jpeg, image/png" class="form-input" style="padding: 0.5rem;" <%= editing ? '' : 'required' %>>
+            <% if (editing && home.photo) { %>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">Current: <%= home.photo %> (upload new to replace)</p>
+            <% } %>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Description</label>
+            <textarea name="description" placeholder="Describe your property, amenities, nearby attractions..." class="form-input" style="min-height: 120px; resize: vertical;" required><%= editing ? home.description : '' %></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+            <i class="fa-solid fa-<%= editing ? 'save' : 'plus' %>"></i>
+            <%= editing ? "Update Property" : "List Property" %>
+          </button>
+        </form>
+      </div>
     </main>
   </body>
 </html>

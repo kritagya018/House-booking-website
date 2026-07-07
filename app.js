@@ -60,6 +60,7 @@ const multerOptions = {
   storage, fileFilter
 };
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single('photo'));
 app.use(express.static(path.join(rootDir, 'public')))
@@ -68,7 +69,7 @@ app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')))
 app.use("/homes/uploads", express.static(path.join(rootDir, 'uploads')))
 
 app.use(session({
-  secret: "KnowledgeGate AI with Complete Coding",
+  secret: "StayEG-Secret-Key-2026",
   resave: false,
   saveUninitialized: true,
   store
